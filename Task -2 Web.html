@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interactive Web Development Examples</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600;800&display=swap" rel="stylesheet" />
+
+<style>
+  /* CSS Variables */
+  :root {
+    --bg-light: #ffffff;
+    --text-neutral: #6b7280;
+    --text-heading: #111827;
+    --primary-color: #000000;
+    --accent-color: #7c3aed;
+    --input-bg: #f9fafb;
+    --input-border: #d1d5db;
+    --input-focus-border: var(--accent-color);
+    --shadow-light: rgba(0, 0, 0, 0.05);
+    --shadow-accent: rgba(124, 58, 173, 0.25);
+    --border-radius: 0.75rem;
+    --transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --font-heading: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+  /* Reset */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    background: var(--bg-light);
+    color: var(--text-neutral);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh; /* Ensure body takes full height for login centering */
+    display: flex;
+    flex-direction: column;
+  }
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+  a:hover, a:focus {
+    color: var(--accent-color);
+    text-decoration: underline;
+  }
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem 5rem;
+    flex-grow: 1; /* Allow main to grow and push footer down */
+  }
+  h1, h2 {
+    font-family: var(--font-heading);
+    color: var(--text-heading);
+    font-weight: 800;
+    line-height: 1.2;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+  h1 {
+    font-size: 48px;
+    margin-bottom: 1rem;
+  }
+  h2 {
+    font-size: 2.25rem;
+    margin-top: 4rem;
+    margin-bottom: 1.5rem;
+  }
+  p {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    color: var(--text-neutral);
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.08), transparent);
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05), inset 0 -1px 0 rgba(255,255,255,0.5);
+  }
+  nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    user-select: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: 1.75rem;
+  }
+  .nav-links a {
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  .nav-links a:hover,
+  .nav-links a:focus {
+    background: linear-gradient(135deg, var(--accent-color), #9333ea);
+    color: var(--bg-light);
+    transform: scale(1.07);
+    box-shadow: 0 6px 15px var(--shadow-accent);
+    outline: none;
+  }
+
+  /* Button with animations */
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent-color), #9333ea);
+    color: var(--bg-light);
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    box-shadow: 0 10px 20px var(--shadow-accent);
+    transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    will-change: transform;
+  }
+  .btn-primary:hover,
+  .btn-primary:focus {
+    background: linear-gradient(135deg, #9333ea, var(--accent-color));
+    transform: scale(1.1);
+    box-shadow: 0 14px 30px var(--shadow-accent);
+    outline: none;
+  }
+
+  /* Form Styles */
+  .form-container {
+    background: linear-gradient(135deg, #fef9ff, #f3e8ff);
+    padding: 2.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 3px 25px rgba(124, 58, 173, 0.2), 0 0 8px rgba(158, 86, 242, 0.15);
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  .form-container label {
+    display: block;
+    margin-bottom: 0.65rem;
+    font-weight: 600;
+    color: var(--text-heading);
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+  }
+  .form-container input[type="text"],
+  .form-container input[type="email"],
+  .form-container input[type="password"],
+  .form-container input[type="date"] {
+    width: 100%;
+    padding: 0.9rem 1.25rem;
+    margin-bottom: 1.75rem;
+    border: 1.7px solid var(--input-border);
+    border-radius: 0.6rem;
+    font-size: 1.1rem;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    background: var(--input-bg);
+    font-family: var(--font-body);
+  }
+  .form-container input[type="text"]:focus,
+  .form-container input[type="email"]:focus,
+  .form-container input[type="password"]:focus,
+  .form-container input[type="date"]:focus {
+    outline: none;
+    border-color: var(--input-focus-border);
+    box-shadow: 0 0 12px var(--accent-color);
+    background: #fbf6ff;
+  }
+  .form-container input[type="submit"],
+  .form-container button {
+    width: 100%;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    will-change: transform;
+    background: linear-gradient(135deg, var(--accent-color), #9333ea);
+    color: var(--bg-light);
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 20px var(--shadow-accent);
+  }
+  .form-container input[type="submit"]:hover,
+  .form-container input[type="submit"]:focus,
+  .form-container button:hover,
+  .form-container button:focus {
+    background: linear-gradient(135deg, #9333ea, var(--accent-color));
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px var(--shadow-accent);
+    outline: none;
+  }
+
+  /* Sections */
+  section {
+    padding: 4rem 2rem 5rem;
+  }
+  .hidden {
+    display: none !important;
+  }
+
+  /* Login Page Specific Styles */
+  #login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    background: linear-gradient(180deg, #ede9fe 0%, #fef9ff 100%);
+  }
+  #login-page .form-container {
+    max-width: 400px;
+    text-align: center;
+  }
+  #login-page h2 {
+    margin-top: 0;
+    font-size: 2.5rem;
+    color: var(--accent-color);
+  }
+
+  /* Responsive Layout Section */
+  .nav-container {
+    background: linear-gradient(135deg, #fef9ff, #e9d5ff);
+    padding: 1.5rem 3rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 3px 20px rgba(124, 58, 173, 0.12);
+    max-width: 1200px;
+    margin: 2rem auto 1rem;
+  }
+  .nav-flex {
+    display: flex;
+    justify-content: space-around;
+    gap: 2.5rem;
+  }
+  .nav-flex a {
+    font-weight: 600;
+    padding: 0.65rem 1.25rem;
+    border-radius: 0.5rem;
+    color: var(--text-heading);
+    background-color: var(--bg-light);
+    transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    font-family: var(--font-body);
+    cursor: pointer;
+    font-size: 1.05rem;
+  }
+  .nav-flex a:hover, .nav-flex a:focus {
+    background: linear-gradient(135deg, var(--accent-color), #9333ea);
+    color: var(--bg-light);
+    transform: scale(1.07);
+    box-shadow: 0 6px 15px var(--shadow-accent);
+    outline: none;
+  }
+
+  .grid-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    padding: 0 1rem;
+  }
+  .grid-content > div {
+    background: linear-gradient(145deg, #f9f5ff, #ede9fe);
+    padding: 1.75rem;
+    border-radius: var(--border-radius);
+    box-shadow: 4px 4px 12px rgba(124, 58, 173, 0.15), -4px -4px 15px rgba(255, 255, 255, 0.85);
+    color: var(--text-heading);
+    font-weight: 600;
+    text-align: center;
+    user-select: none;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    cursor: default;
+    font-family: var(--font-body);
+  }
+  .grid-content > div:hover {
+    transform: translateY(-7px);
+    box-shadow: 8px 8px 20px rgba(124, 58, 173, 0.3), -8px -8px 20px rgba(255, 255, 255, 0.95);
+  }
+
+  @media (max-width: 900px) {
+    .grid-content {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .nav-flex {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+    .grid-content {
+      grid-template-columns: 1fr;
+      padding: 0 1rem;
+    }
+  }
+
+  /* To-Do List Styles (Enhanced for tasks) */
+  .todo-section {
+    max-width: 650px; /* Increased width for more task details */
+    margin: 2rem auto 5rem;
+    background: linear-gradient(135deg, #fef9ff, #ede9fe);
+    border-radius: var(--border-radius);
+    box-shadow: 0 3px 25px rgba(124, 58, 173, 0.2), 0 0 7px rgba(158, 86, 242, 0.15);
+    padding: 2.5rem;
+    font-family: var(--font-body);
+  }
+  .todo-section h2 {
+    margin-bottom: 1.25rem;
+    color: var(--text-heading);
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 2rem;
+    text-align: center;
+  }
+  .todo-input-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+  }
+  #taskInput, #taskDueDate {
+    flex-grow: 1;
+    padding: 1rem 1.25rem;
+    border: 1.7px solid var(--input-border);
+    border-radius: 0.6rem;
+    font-size: 1.1rem;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    background: var(--input-bg);
+    font-family: var(--font-body);
+    min-width: 150px; /* Ensure input fields are not too small */
+  }
+  #taskDueDate {
+      max-width: 180px; /* Adjust width for date input */
+  }
+  #addTaskButton {
+    background: linear-gradient(135deg, var(--accent-color), #9333ea);
+    border: none;
+    color: var(--bg-light);
+    font-weight: 700;
+    padding: 0 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    box-shadow: 0 10px 25px var(--shadow-accent);
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+  }
+  #addTaskButton:hover,
+  #addTaskButton:focus {
+    background: linear-gradient(135deg, #9333ea, var(--accent-color));
+    transform: scale(1.05); /* Slightly less aggressive scale for button within form */
+    box-shadow: 0 14px 30px var(--shadow-accent);
+    outline: none;
+  }
+  #taskList {
+    list-style: none;
+    padding-left: 0;
+    max-height: 400px; /* Increased height */
+    overflow-y: auto;
+  }
+  #taskList li {
+    background: var(--bg-light);
+    border-radius: 0.6rem;
+    padding: 0.85rem 1.25rem;
+    margin-bottom: 0.85rem;
+    box-shadow: 0 1.5px 4px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    user-select: none;
+    font-family: var(--font-body);
+    position: relative; /* For position absolute children */
+  }
+  #taskList li:hover {
+    transform: scale(1.02); /* Less aggressive hover for list items */
+    background-color: #f3f4f6;
+  }
+  #taskList li.completed {
+    text-decoration: line-through;
+    color: var(--text-neutral);
+    background-color: #e2e8f0;
+  }
+  #taskList li.overdue {
+    border: 2px solid #ef4444; /* Red border for overdue tasks */
+    box-shadow: 0 1.5px 6px rgba(239, 68, 68, 0.2);
+    color: #b91c1c;
+    background-color: #fee2e2;
+  }
+  #taskList li .task-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  #taskList li .task-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-heading);
+  }
+  #taskList li .task-date {
+    font-size: 0.9rem;
+    color: var(--text-neutral);
+    margin-top: 0.2rem;
+  }
+  #taskList li button {
+    background: none;
+    border: none;
+    color: #ef4444; /* Red for delete */
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: 1rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  #taskList li button:hover {
+    background-color: #fca5a5;
+    color: white;
+  }
+  #taskList li button.complete-btn {
+    color: #10b981; /* Green for complete */
+    margin-right: 0.5rem;
+  }
+  #taskList li button.complete-btn:hover {
+    background-color: #a7f3d0;
+    color: white;
+  }
+
+  .task-filters {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+  }
+  .task-filters button {
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--text-heading);
+  }
+  .task-filters button:hover,
+  .task-filters button.active {
+      background: var(--accent-color);
+      color: var(--bg-light);
+      border-color: var(--accent-color);
+      box-shadow: 0 4px 10px var(--shadow-accent);
+  }
+
+  /* Additional Content Styles */
+
+  /* Home Timeline */
+  #home .timeline {
+    max-width: 720px;
+    margin: 0 auto;
+    background: #fafaff;
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 20px rgba(124, 58, 173, 0.12);
+    padding: 3rem;
+    font-family: var(--font-body);
+  }
+  #home .timeline h3 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 1.25rem;
+    font-size: 2rem;
+  }
+  #home .timeline h4 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.3rem;
+  }
+  #home .timeline strong {
+    font-weight: 700;
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  #home .timeline p, #home .timeline ul {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-neutral);
+    margin-bottom: 0.25rem;
+  }
+  #home .timeline ul {
+    margin-left: 1.5rem;
+  }
+
+  /* Features cards */
+  #features .features-grid {
+    max-width: 960px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+    gap: 2rem;
+    padding: 2rem 1rem 0;
+  }
+  #features .feature-card {
+    background: linear-gradient(145deg, #f9f5ff, #ede9fe);
+    border-radius: var(--border-radius);
+    box-shadow:
+      5px 5px 20px rgba(124, 58, 173, 0.18),
+      -5px -5px 20px rgba(255, 255, 255, 0.9);
+    padding: 2rem 1.75rem;
+    font-family: var(--font-body);
+    transition: box-shadow var(--transition-fast);
+  }
+  #features .feature-card:hover,
+  #features .feature-card:focus-within {
+    box-shadow:
+      10px 10px 35px rgba(124, 58, 173, 0.35),
+      -10px -10px 35px rgba(255, 255, 255, 0.98);
+    outline: none;
+  }
+  #features .feature-card h4 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: var(--text-heading);
+  }
+  #features .feature-card ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    color: var(--text-neutral);
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  /* Pricing cards */
+  #pricing .pricing-grid {
+    max-width: 960px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 2rem;
+    padding: 2rem 1rem 0;
+  }
+  #pricing .price-card {
+    background: linear-gradient(135deg, #fef9ff, #ede9fe);
+    border-radius: var(--border-radius);
+    box-shadow:
+      0 8px 30px rgba(124, 58, 173, 0.2),
+      0 0 15px rgba(158, 86, 242, 0.2);
+    padding: 3rem 2rem;
+    text-align: center;
+    font-family: var(--font-body);
+    transition: box-shadow var(--transition-fast);
+  }
+  #pricing .price-card:hover,
+  #pricing .price-card:focus-within {
+    box-shadow:
+      0 14px 45px rgba(124, 58, 173, 0.35),
+      0 0 25px rgba(158, 86, 242, 0.3);
+    outline: none;
+  }
+  #pricing .price-card h4 {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+  }
+  #pricing .price-card .amount {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+    color: var(--text-heading);
+  }
+  #pricing .price-card p {
+    font-size: 1.15rem;
+    color: var(--text-neutral);
+    margin-bottom: 1.75rem;
+  }
+  #pricing .price-card .button {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent-color), #9333ea);
+    color: var(--bg-light);
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    font-size: 1.15rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    will-change: transform;
+  }
+  #pricing .price-card .button:hover,
+  #pricing .price-card .button:focus {
+    background: linear-gradient(135deg, #9333ea, var(--accent-color));
+    transform: scale(1.07);
+    box-shadow: 0 12px 30px var(--shadow-accent);
+    outline: none;
+  }
+</style>
+</head>
+<body>
+
+<section id="login-page">
+    <div class="form-container">
+        <h2>Welcome Back!</h2>
+        <p>Please log in to continue.</p>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required autocomplete="username" />
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required autocomplete="current-password" />
+
+            <button type="submit">Login</button>
+        </form>
+        <p style="margin-top: 1.5rem; font-size: 0.95rem; color: #888;">
+            (Hint: Use username "user" and password "pass")
+        </p>
+    </div>
+</section>
+
+<div id="main-content" class="hidden">
+    <header>
+        <nav role="navigation" aria-label="Primary navigation">
+            <div class="logo" tabindex="0">Develop U</div>
+            <div class="nav-links">
+                <a href="#responsive-layout" data-target="responsive-layout">Responsive Layout</a>
+                <a href="#home" data-target="home">Home</a>
+                <a href="#features" data-target="features">Features</a>
+                <a href="#pricing" data-target="pricing">Pricing</a>
+                <a href="#todo-list" data-target="todo-list">My Tasks</a>
+                <a href="#" id="logoutButton">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero-section" style="text-align: center; padding: 5rem 2rem 3rem; background: linear-gradient(180deg, #ede9fe 0%, #fef9ff 100%); border-radius: 1rem; margin-bottom: 4rem; box-shadow: 0 2px 30px rgba(124, 58, 173, 0.15);">
+            <h1>Build Your Web Skills</h1>
+            <p style="max-width: 650px; margin: 0 auto; color: var(--text-neutral); font-size: 1.3rem;">
+                Learn to create elegant forms, validate input, build responsive layouts, and manipulate the DOM with JavaScript.
+            </p>
+            <button class="btn-primary" onclick="document.getElementById('contactForm').scrollIntoView({behavior: 'smooth'})">Get Started</button>
+        </section>
+
+        <section id="home" class="layout-section hidden" aria-labelledby="home-title">
+            <h2 id="home-title">Home</h2>
+            <div class="timeline" aria-label="Full Stack Web Development Course Outline">
+                <h3>Full Stack Web Development Course</h3>
+                
+                <h4>1. Introduction to Web Development</h4>
+                <ul>
+                    <li>Web architecture overview: Frontend, Backend, Database</li>
+                    <li>Understanding how websites work (client-server model)</li>
+                    <li>Tools setup: Code editor (VS Code), terminal, Git, GitHub</li>
+                </ul>
+                
+                <h4>2. Frontend Development</h4>
+                <strong>HTML &amp; CSS</strong>
+                <ul>
+                    <li>Semantic HTML5</li>
+                    <li>CSS3 styling, Box Model, Flexbox, Grid</li>
+                    <li>Responsive design &amp; media queries</li>
+                    <li>CSS preprocessors (SASS basics)</li>
+                </ul>
+                <strong>JavaScript (ES6+)</strong>
+                <ul>
+                    <li>Syntax, DOM manipulation</li>
+                    <li>Event handling</li>
+                    <li>Fetch API, Promises, Async/Await</li>
+                    <li>LocalStorage/sessionStorage</li>
+                    <li>ES6 modules, arrow functions, destructuring</li>
+                </ul>
+                <strong>Frontend Framework – React.js</strong>
+                <ul>
+                    <li>JSX, Components (functional/class)</li>
+                    <li>Props, State, Lifecycle methods</li>
+                    <li>React Hooks (useState, useEffect)</li>
+                    <li>Forms, Validation</li>
+                    <li>React Router</li>
+                    <li>Context API or Redux (state management)</li>
+                </ul>
+                
+                <h4>3. Version Control</h4>
+                <ul>
+                    <li>Git basics: clone, commit, push, pull</li>
+                    <li>Branching &amp; merging</li>
+                    <li>GitHub: Pull Requests, Issues, Collaboration</li>
+                </ul>
+                
+                <h4>4. Backend Development</h4>
+                <strong>Node.js &amp; Express.js</strong>
+                <ul>
+                    <li>Introduction to Node.js</li>
+                    <li>npm/yarn, package.json</li>
+                    <li>Creating APIs with Express</li>
+                    <li>Middleware, Routing</li>
+                    <li>Environment variables, error handling</li>
+                </ul>
+                <strong>Authentication</strong>
+                <ul>
+                    <li>User registration/login</li>
+                    <li>JWT (JSON Web Tokens)</li>
+                    <li>Sessions &amp; cookies</li>
+                    <li>OAuth (e.g., Google login)</li>
+                </ul>
+                
+                <h4>5. Databases</h4>
+                <strong>MongoDB (NoSQL)</strong>
+                <ul>
+                    <li>CRUD operations</li>
+                    <li>Mongoose ODM</li>
+                    <li>Data modeling, validation</li>
+                    <li>MongoDB Atlas</li>
+                </ul>
+                <strong>(Optional) Relational Databases (MySQL/PostgreSQL)</strong>
+                <ul>
+                    <li>SQL basics</li>
+                    <li>Joins, indexes, normalization</li>
+                    <li>ORM with Sequelize/Prisma</li>
+                </ul>
+                
+                <h4>6. RESTful API Design</h4>
+                <ul>
+                    <li>REST principles</li>
+                    <li>HTTP methods &amp; status codes</li>
+                    <li>Building CRUD APIs</li>
+                    <li>API testing with Postman</li>
+                </ul>
+                
+                <h4>7. Deployment &amp; DevOps Basics</h4>
+                <ul>
+                    <li>Deploy frontend &amp; backend: Vercel, Netlify, Render, or Heroku</li>
+                    <li>CI/CD basics (GitHub Actions)</li>
+                    <li>Environment configuration</li>
+                    <li>Docker basics (optional)</li>
+                </ul>
+                
+                <h4>8. Project Work</h4>
+                <ul>
+                    <li>Mini projects throughout course</li>
+                    <li>Final full-stack capstone project including:</li>
+                    <ul>
+                        <li>User authentication</li>
+                        <li>CRUD operations</li>
+                        <li>Frontend + backend integration</li>
+                        <li>Responsive design</li>
+                        <li>Deployment &amp; README</li>
+                    </ul>
+                </ul>
+                
+                <h4>9. Bonus Topics (Optional/Advanced)</h4>
+                <ul>
+                    <li>TypeScript</li>
+                    <li>GraphQL basics</li>
+                    <li>WebSockets (real-time apps)</li>
+                    <li>Testing (Jest, React Testing Library, Supertest)</li>
+                    <li>Progressive Web Apps (PWA)</li>
+                    <li>Serverless functions (AWS Lambda, Netlify)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="features" class="layout-section hidden" aria-labelledby="features-title">
+            <h2 id="features-title">Features</h2>
+            <div class="features-grid" role="list">
+                <article class="feature-card" role="listitem" tabindex="0" aria-label="Comprehensive Curriculum">
+                    <h4>Comprehensive Curriculum</h4>
+                    <ul>
+                        <li>Covers fundamental and advanced web development topics.</li>
+                        <li>Project-based learning for practical skills.</li>
+                    </ul>
+                </article>
+                <article class="feature-card" role="listitem" tabindex="0" aria-label="Responsive Design Focus">
+                    <h4>Responsive Design Focus</h4>
+                    <ul>
+                        <li>Build websites that adapt perfectly across devices.</li>
+                        <li>Learn CSS Grid, Flexbox, and media queries in-depth.</li>
+                    </ul>
+                </article>
+                <article class="feature-card" role="listitem" tabindex="0" aria-label="Dynamic Interactivity">
+                    <h4>Dynamic Interactivity</h4>
+                    <ul>
+                        <li>Master JavaScript for DOM manipulation and event handling.</li>
+                        <li>Create real-time, dynamic user interfaces.</li>
+                    </ul>
+                </article>
+                <article class="feature-card" role="listitem" tabindex="0" aria-label="Performance and Accessibility">
+                    <h4>Performance &amp; Accessibility</h4>
+                    <ul>
+                        <li>Optimize for Core Web Vitals and fast load times.</li>
+                        <li>Ensure accessibility with semantic HTML and ARIA.</li>
+                    </ul>
+                </article>
+                <article class="feature-card" role="listitem" tabindex="0" aria-label="Support and Community">
+                    <h4>Support &amp; Community</h4>
+                    <ul>
+                        <li>Access to mentorship and community forums.</li>
+                        <li>Collaborate with peers to grow skills together.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section id="pricing" class="layout-section hidden" aria-labelledby="pricing-title">
+            <h2 id="pricing-title">Pricing</h2>
+            <div class="pricing-grid" role="list">
+                <article class="price-card" role="listitem" tabindex="0" aria-label="Basic Plan">
+                    <h4>Basic Plan</h4>
+                    <p class="amount">₹99 / month</p>
+                    <p>Access to frontend courses and community forums.</p>
+                    <a href="#contact-form" class="button">Get Started</a>
+                </article>
+                <article class="price-card" role="listitem" tabindex="0" aria-label="Standard Plan">
+                    <h4>Standard Plan</h4>
+                    <p class="amount">₹179 / month</p>
+                    <p>Includes frontend + backend courses, project reviews.</p>
+                    <a href="#contact-form" class="button">Get Started</a>
+                </article>
+                <article class="price-card" role="listitem" tabindex="0" aria-label="Premium Plan">
+                    <h4>Premium Plan</h4>
+                    <p class="amount">₹249 / month</p>
+                    <p>All courses, mentorship, live sessions, and certificates.</p>
+                    <a href="#contact-form" class="button">Get Started</a>
+                </article>
+            </div>
+        </section>
+
+        <section id="about" class="layout-section hidden" aria-labelledby="about-title">
+            <h2 id="about-title">About Us</h2>
+            <p>Welcome to Develop U, your premier destination for mastering web development. We offer a comprehensive curriculum designed to take you from beginner to a confident full-stack developer. Our expert instructors and vibrant community support your learning journey every step of the way.</p>
+            <p>Our mission is to empower individuals with the skills needed to thrive in the dynamic world of web technology. Join us and transform your career!</p>
+        </section>
+
+        <section id="contactForm" class="layout-section hidden" aria-labelledby="contact-form-title">
+            <h2 id="contact-form-title" style="text-align: center;">Contact Us</h2>
+            <div class="form-container">
+                <form>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Your Name" required />
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required />
+
+                    <input type="submit" value="Send Message" />
+                </form>
+            </div>
+        </section>
+
+        <section id="responsive-layout" class="layout-section hidden" aria-labelledby="responsive-layout-title">
+            <h2 id="responsive-layout-title">Responsive Layout</h2>
+            <div class="nav-container" role="navigation" aria-label="Section navigation">
+                <div class="nav-flex">
+                    <a href="#" aria-label="Home link">Home</a>
+                    <a href="#" aria-label="Features link">Features</a>
+                    <a href="#" aria-label="Pricing link">Pricing</a>
+                    <a href="#" aria-label="About link">About</a>
+                </div>
+            </div>
+            <div class="grid-content" aria-label="Content Blocks">
+                <div>Content Block 1</div>
+                <div>Content Block 2</div>
+                <div>Content Block 3</div>
+            </div>
+        </section>
+
+        <section id="todo-list" class="todo-section hidden" aria-labelledby="todo-list-title">
+            <h2 id="todo-list-title">My Tasks</h2>
+            <div class="todo-input-container">
+                <input type="text" id="taskInput" placeholder="Add a new task" aria-label="New task input" />
+                <input type="date" id="taskDueDate" aria-label="Task due date" />
+                <button id="addTaskButton" aria-label="Add task">Add Task</button>
+            </div>
+            <div class="task-filters">
+                <button id="filterAll" class="active">All</button>
+                <button id="filterActive">Active</button>
+                <button id="filterCompleted">Completed</button>
+                <button id="sortByDate">Sort by Due Date</button>
+            </div>
+            <ul id="taskList" aria-live="polite" aria-relevant="additions removals"></ul>
+            <p style="color: var(--text-neutral); font-size: 0.9rem; text-align: center; margin-top: 1rem;">
+                Click task text to toggle completion. Click "X" to delete.
+            </p>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    const loginPage = document.getElementById('login-page');
+    const mainContent = document.getElementById('main-content');
+    const loginForm = document.getElementById('loginForm');
+    const logoutButton = document.getElementById('logoutButton');
+    const navLinks = document.querySelectorAll('.nav-links a[data-target]');
+    const allSections = document.querySelectorAll('main .layout-section, #hero-section');
+
+    let tasks = [];
+    let currentFilter = 'all'; // 'all', 'active', 'completed'
+    let currentSort = 'none'; // 'none', 'dueDate'
+
+    // --- Page/Section Management ---
+    function showPage(pageId) {
+        allSections.forEach(section => {
+            section.classList.add('hidden');
+        });
+        const targetSection = document.getElementById(pageId);
+        if (targetSection) {
+            targetSection.classList.remove('hidden');
+            targetSection.scrollIntoView({ behavior: 'smooth' });
+        } else if (pageId === 'hero-section') {
+             // Special handling for hero section if it's not a 'layout-section'
+            document.getElementById('hero-section').classList.remove('hidden');
+            document.getElementById('hero-section').scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    function showMainContent() {
+        loginPage.classList.add('hidden');
+        mainContent.classList.remove('hidden');
+        showPage('hero-section'); // Show the hero section by default after login
+    }
+
+    function showLoginPage() {
+        mainContent.classList.add('hidden');
+        loginPage.classList.remove('hidden');
+        localStorage.removeItem('loggedIn'); // Clear login status
+    }
+
+    // Check login status on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        if (localStorage.getItem('loggedIn') === 'true') {
+            showMainContent();
+            loadTasks(); // Load tasks only after logging in
+        } else {
+            showLoginPage();
+        }
+    });
+
+    // Handle Login Form Submission
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Simple validation: In a real app, you'd send these to a server
+        if (username === 'user' && password === 'pass') {
+            localStorage.setItem('loggedIn', 'true');
+            showMainContent();
+            loadTasks(); // Load tasks after successful login
+        } else {
+            alert('Invalid username or password. Please try again.');
+            this.reset();
+        }
+    });
+
+    // Handle Logout
+    logoutButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        showLoginPage();
+        tasks = []; // Clear tasks on logout
+        saveTasks();
+        renderTasks();
+    });
+
+    // Handle navigation clicks
+    navLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const targetId = event.target.dataset.target;
+            showPage(targetId);
+            // If navigating to todo-list, re-render tasks to ensure freshness
+            if (targetId === 'todo-list') {
+                renderTasks();
+            }
+        });
+    });
+
+
+    // --- Contact Form Validation (Original) ---
+    // The original contact form now requires an ID to be targeted for its event listener.
+    // I've added id="contactForm" to the form element within the section.
+    const contactFormElement = document.querySelector('#contactForm .form-container form');
+    if (contactFormElement) { // Check if the element exists
+        contactFormElement.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = this.name.value.trim();
+            const email = this.email.value.trim();
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            let errors = [];
+
+            if (!name) {
+                errors.push('Name is required.');
+            }
+            if (!email) {
+                errors.push('Email is required.');
+            } else if (!emailPattern.test(email)) {
+                errors.push('Please enter a valid email address.');
+            }
+
+            if (errors.length > 0) {
+                alert(errors.join('\n'));
+            } else {
+                alert('Form submitted successfully!\nThank you, ' + name + '.');
+                this.reset();
+            }
+        });
+    }
+
+    // --- Task Management System ---
+    const taskInput = document.getElementById('taskInput');
+    const taskDueDateInput = document.getElementById('taskDueDate');
+    const addTaskButton = document.getElementById('addTaskButton');
+    const taskList = document.getElementById('taskList');
+    const filterAllBtn = document.getElementById('filterAll');
+    const filterActiveBtn = document.getElementById('filterActive');
+    const filterCompletedBtn = document.getElementById('filterCompleted');
+    const sortByDateBtn = document.getElementById('sortByDate');
+
+    function saveTasks() {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    function loadTasks() {
+        const storedTasks = localStorage.getItem('tasks');
+        if (storedTasks) {
+            tasks = JSON.parse(storedTasks);
+        } else {
+            tasks = [];
+        }
+        renderTasks();
+    }
+
+    function renderTasks() {
+        taskList.innerHTML = ''; // Clear current list
+
+        let filteredTasks = [...tasks]; // Create a copy for filtering/sorting
+
+        // Apply filter
+        if (currentFilter === 'active') {
+            filteredTasks = filteredTasks.filter(task => !task.completed);
+        } else if (currentFilter === 'completed') {
+            filteredTasks = filteredTasks.filter(task => task.completed);
+        }
+
+        // Apply sort
+        if (currentSort === 'dueDate') {
+            filteredTasks.sort((a, b) => {
+                const dateA = a.dueDate ? new Date(a.dueDate) : new Date('9999-12-31'); // Push tasks without date to end
+                const dateB = b.dueDate ? new Date(b.dueDate) : new Date('9999-12-31');
+                return dateA - dateB;
+            });
+        }
+
+
+        filteredTasks.forEach(task => {
+            const li = document.createElement('li');
+            li.dataset.id = task.id; // Store ID on the element
+
+            if (task.completed) {
+                li.classList.add('completed');
+            }
+
+            // Check for overdue status
+            if (!task.completed && task.dueDate) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0); // Normalize today's date
+                const dueDate = new Date(task.dueDate);
+                dueDate.setHours(0, 0, 0, 0); // Normalize due date
+
+                if (dueDate < today) {
+                    li.classList.add('overdue');
+                }
+            }
+
+            const taskContent = document.createElement('div');
+            taskContent.classList.add('task-content');
+
+            const taskTextElem = document.createElement('span');
+            taskTextElem.classList.add('task-text');
+            taskTextElem.textContent = task.text;
+            taskTextElem.addEventListener('click', () => toggleTaskCompletion(task.id)); // Toggle on text click
+
+            taskContent.appendChild(taskTextElem);
+
+            if (task.dueDate) {
+                const taskDateElem = document.createElement('span');
+                taskDateElem.classList.add('task-date');
+                taskDateElem.textContent = `Due: ${new Date(task.dueDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}`;
+                taskContent.appendChild(taskDateElem);
+            }
+
+            li.appendChild(taskContent);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.innerHTML = '&#x2715;'; // 'X' character
+            deleteBtn.classList.add('delete-btn');
+            deleteBtn.setAttribute('aria-label', `Delete task: ${task.text}`);
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent toggling completion when deleting
+                deleteTask(task.id);
+            });
+            li.appendChild(deleteBtn);
+
+            taskList.appendChild(li);
+        });
+
+        // Update active filter button state
+        document.querySelectorAll('.task-filters button').forEach(button => {
+            if (button.id === `filter${currentFilter.charAt(0).toUpperCase() + currentFilter.slice(1)}`) {
+                button.classList.add('active');
+            } else if (button.id === 'sortByDate' && currentSort === 'dueDate') {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        });
+    }
+
+    function addTask() {
+        const text = taskInput.value.trim();
+        const dueDate = taskDueDateInput.value; // YYYY-MM-DD string
+        if (!text) {
+            alert('Task cannot be empty.');
+            return;
+        }
+
+        const newTask = {
+            id: Date.now().toString(), // Simple unique ID
+            text,
+            completed: false,
+            dueDate: dueDate || null // Store due date or null
+        };
+        tasks.push(newTask);
+        saveTasks();
+        taskInput.value = '';
+        taskDueDateInput.value = ''; // Clear date input
+        renderTasks();
+    }
+
+    function toggleTaskCompletion(id) {
+        const taskIndex = tasks.findIndex(task => task.id === id);
+        if (taskIndex > -1) {
+            tasks[taskIndex].completed = !tasks[taskIndex].completed;
+            saveTasks();
+            renderTasks();
+        }
+    }
+
+    function deleteTask(id) {
+        tasks = tasks.filter(task => task.id !== id);
+        saveTasks();
+        renderTasks();
+    }
+
+    // Event Listeners for Task Management
+    addTaskButton.addEventListener('click', addTask);
+    taskInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            addTask();
+        }
+    });
+
+    filterAllBtn.addEventListener('click', () => {
+        currentFilter = 'all';
+        currentSort = 'none'; // Reset sort when changing filter
+        renderTasks();
+    });
+    filterActiveBtn.addEventListener('click', () => {
+        currentFilter = 'active';
+        currentSort = 'none'; // Reset sort
+        renderTasks();
+    });
+    filterCompletedBtn.addEventListener('click', () => {
+        currentFilter = 'completed';
+        currentSort = 'none'; // Reset sort
+        renderTasks();
+    });
+    sortByDateBtn.addEventListener('click', () => {
+        currentSort = currentSort === 'dueDate' ? 'none' : 'dueDate'; // Toggle sort
+        renderTasks();
+    });
+
+</script>
+
+</body>
+</html>
