@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vibrant Spacious TaskMaster with Add Options Enabled</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<style>
+  :root {
+    --color-bg: linear-gradient(135deg, #ede9fe, #dbeafe);
+    --color-primary: #7c3aed; 
+    --color-primary-light: #a78bfa;
+    --color-primary-dark: #5b21b6;
+    --color-secondary: #14b8a6;
+    --color-secondary-light: #2dd4bf;
+    --color-text-primary: #1f2937;
+    --color-text-secondary: #4b5563;
+    --color-card-bg: #ffffff;
+    --color-border: #c7d2fe;
+    --color-shadow: rgba(124, 58, 237, 0.15);
+    --color-error: #ef4444;
+    --font-family: 'Poppins', sans-serif;
+
+    --spacing-xs: 12px;
+    --spacing-sm: 24px;
+    --spacing-md: 40px;
+    --spacing-lg: 64px;
+    --spacing-xl: 96px;
+
+    --border-radius: 20px;
+    --transition-speed: 0.35s;
+  }
+
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+
+  html {
+    font-size: 18px;
+    scroll-behavior: smooth;
+    background: var(--color-bg);
+    font-family: var(--font-family);
+  }
+
+  body {
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a, button {
+    font-family: inherit;
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    background: none;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+    width: 100%;
+  }
+
+  header {
+    background: rgba(255 255 255 / 0.9);
+    border-bottom: 2px solid var(--color-primary-light);
+    position: sticky;
+    top: 0; z-index: 1000;
+    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.15);
+    backdrop-filter: saturate(180%) blur(15px);
+  }
+
+  .header-inner {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-weight: 900;
+    font-size: 1.75rem;
+    color: var(--color-primary);
+    letter-spacing: 2.5px;
+    user-select: none;
+    text-shadow: 0 0 6px rgba(124, 58, 237, 0.3);
+  }
+
+  nav.desktop-nav { display: none; }
+  nav.desktop-nav ul {
+    list-style: none;
+    display: flex;
+    gap: var(--spacing-lg);
+  }
+  nav.desktop-nav a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.125rem;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+  }
+  nav.desktop-nav a:hover,
+  nav.desktop-nav a:focus {
+    background-color: var(--color-primary);
+    color: white;
+    outline: none;
+    box-shadow: 0 4px 12px var(--color-shadow);
+  }
+
+  .hamburger-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border: none;
+    color: var(--color-primary);
+    font-size: 2rem;
+    padding: var(--spacing-xs);
+    transition: color var(--transition-speed);
+  }
+  .hamburger-btn:hover,
+  .hamburger-btn:focus {
+    color: var(--color-primary-dark);
+    outline-offset: 3px;
+    outline: 2px solid var(--color-primary-dark);
+  }
+  .material-icons {
+    font-size: 32px;
+    vertical-align: middle;
+  }
+
+  .mobile-nav {
+    display: none;
+    background-color: var(--color-card-bg);
+    box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    z-index: 995;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    padding-bottom: var(--spacing-lg);
+  }
+  .mobile-nav.open { display: block; }
+  .mobile-nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+  .mobile-nav li + li { border-top: 1.5px solid var(--color-border); }
+  .mobile-nav a {
+    display: block;
+    padding: var(--spacing-md);
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+    border-radius: var(--border-radius);
+  }
+  .mobile-nav a:hover,
+  .mobile-nav a:focus {
+    background-color: var(--color-primary-light);
+    color: white;
+    outline: none;
+    box-shadow: 0 6px 18px rgba(124, 58, 237, 0.3);
+  }
+
+  /* Hero Banner with image */
+  .hero-banner {
+    width: 100%;
+    height: 220px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    margin: var(--spacing-lg) auto;
+    box-shadow: 0 12px 30px rgba(124, 58, 237, 0.25);
+    position: relative;
+  }
+  .hero-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.85) saturate(1.1);
+    border-radius: var(--border-radius);
+    transition: transform 0.6s ease;
+  }
+  .hero-banner:hover img,
+  .hero-banner:focus-within img {
+    transform: scale(1.05);
+  }
+  .hero-caption {
+    position: absolute;
+    bottom: var(--spacing-lg);
+    left: var(--spacing-lg);
+    color: white;
+    font-weight: 900;
+    font-size: 2.5rem;
+    text-shadow: 0 3px 14px rgba(0, 0, 0, 0.7);
+  }
+
+  main {
+    flex: 1 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    padding-bottom: var(--spacing-xl);
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  aside.sidebar {
+    background: var(--color-card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 20px var(--color-shadow);
+    padding: var(--spacing-md);
+    display: none;
+    position: relative;
+  }
+  /* Decorative sidebar images for projects and categories */
+  aside.sidebar::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    background: url("https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/40484994-639b-4d1c-8a39-bcb350c14028.png") no-repeat center/contain;
+    opacity: 0.15;
+    pointer-events: none;
+    border-radius: 50%;
+  }
+  aside.sidebar::after {
+    content: "";
+    position: absolute;
+    bottom: -40px;
+    left: -40px;
+    width: 140px;
+    height: 140px;
+    background: url("https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/14128a9b-8528-4b6a-8795-39f5c2d56c13.png") no-repeat center/contain;
+    opacity: 0.15;
+    pointer-events: none;
+    border-radius: 50%;
+  }
+
+  aside.sidebar h2 {
+    font-weight: 800;
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-primary);
+    text-shadow: 0 0 8px var(--color-primary-light);
+    position: relative;
+    z-index: 10;
+  }
+
+  .project-list,
+  .category-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    max-height: 370px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+  }
+  .project-list li,
+  .category-list li {
+    margin-bottom: var(--spacing-sm);
+  }
+  .project-list button,
+  .category-list button {
+    width: 100%;
+    padding: 14px 22px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    border-radius: var(--border-radius);
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+    cursor: pointer;
+    font-size: 1.125rem;
+  }
+  .project-list button:hover,
+  .project-list button:focus,
+  .category-list button:hover,
+  .category-list button:focus {
+    background: var(--color-primary-light);
+    color: white;
+    outline: none;
+    box-shadow: 0 6px 22px var(--color-shadow);
+  }
+  .project-list button.active,
+  .category-list button.active {
+    background: var(--color-primary);
+    color: white;
+    font-weight: 900;
+    box-shadow: 0 12px 28px var(--color-shadow);
+  }
+
+  /* Inline add form styles */
+  .add-inline-form {
+    margin-top: 8px;
+    display: none;
+    gap: 12px;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+  .add-inline-form.active {
+    display: flex;
+  }
+  .add-inline-form input[type="text"] {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 12px;
+    font-size: 1rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--border-radius);
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+  }
+  .add-inline-form input[type="text"]:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 8px var(--color-primary-light);
+    outline: none;
+  }
+  .add-inline-form button {
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 8px 18px;
+    border-radius: var(--border-radius);
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+    white-space: nowrap;
+  }
+  .add-inline-form button:hover,
+  .add-inline-form button:focus {
+    background-color: var(--color-primary-dark);
+    box-shadow: 0 0 8px var(--color-primary-dark);
+    outline: none;
+  }
+  .add-inline-form .cancel-btn {
+    background-color: var(--color-error);
+    margin-left: 8px;
+  }
+  .add-inline-form .cancel-btn:hover,
+  .add-inline-form .cancel-btn:focus {
+    background-color: #b91c1c;
+    box-shadow: 0 0 8px #b91c1c;
+  }
+
+  section.task-section {
+    background: var(--color-card-bg);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: 0 8px 24px var(--color-shadow);
+    display: flex;
+    flex-direction: column;
+    min-height: 480px;
+  }
+  section.task-section::before {
+    content: "";
+    position: absolute;
+    top: -80px;
+    right: 0;
+    width: 180px;
+    height: 180px;
+    background: url("https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d15ec107-8069-40d4-a2df-944a05508d1e.png") no-repeat center/contain;
+    opacity: 0.1;
+    pointer-events: none;
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  .task-section header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+    z-index: 2;
+  }
+  .task-section h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--color-primary);
+    text-shadow: 0 0 8px var(--color-primary-light);
+  }
+  form.add-task-form {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+  form.add-task-form input[type="text"],
+  form.add-task-form input[type="date"],
+  form.add-task-form select {
+    flex: 1 1 280px;
+    min-width: 280px;
+    padding: 18px 24px;
+    border-radius: var(--border-radius);
+    border: 2px solid var(--color-border);
+    font-size: 1.25rem;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.03);
+  }
+  form.add-task-form input[type="text"]:focus,
+  form.add-task-form input[type="date"]:focus,
+  form.add-task-form select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 12px var(--color-primary-light);
+  }
+  form.add-task-form button {
+    background-image: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    padding: 18px 36px;
+    border-radius: var(--border-radius);
+    font-weight: 900;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: box-shadow var(--transition-speed), transform var(--transition-speed);
+    min-width: 140px;
+    box-shadow: 0 6px 18px rgba(124, 58, 237, 0.5);
+  }
+  form.add-task-form button:hover,
+  form.add-task-form button:focus {
+    box-shadow: 0 10px 28px rgba(20, 184, 166, 0.7);
+    transform: translateY(-2px);
+    outline: none;
+  }
+
+  ul.task-list {
+    list-style: none;
+    padding-left: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 440px;
+    scroll-behavior: smooth;
+    position: relative;
+    z-index: 2;
+  }
+  ul.task-list li {
+    background: linear-gradient(90deg, #f3e8ff, #e0f2fe);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    gap: var(--spacing-lg);
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.1);
+    transition: background-color var(--transition-speed);
+  }
+  ul.task-list li.completed {
+    background: linear-gradient(90deg, #d1fae5, #bbf7d0);
+    color: var(--color-text-secondary);
+    text-decoration: line-through;
+    box-shadow: 0 4px 14px rgba(20, 184, 166, 0.15);
+  }
+  ul.task-list li:hover {
+    box-shadow: 0 8px 26px rgba(124, 58, 237, 0.25);
+  }
+  ul.task-list label {
+    flex: 1;
+    font-weight: 600;
+    font-size: 1.15rem;
+    cursor: pointer;
+    user-select: none;
+    color: var(--color-text-primary);
+  }
+  ul.task-list li.completed label {
+    color: var(--color-text-secondary);
+  }
+  ul.task-list input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    accent-color: var(--color-primary);
+    box-shadow: 0 0 4px var(--color-primary-light);
+  }
+
+  .task-priority {
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 99px;
+    user-select: none;
+    min-width: 68px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.07);
+  }
+  .priority-low {
+    background: #bbf7d0;
+    color: #0f5132;
+  }
+  .priority-medium {
+    background: #fef9c3;
+    color: #92400e;
+  }
+  .priority-high {
+    background: #fecdd3;
+    color: #9b1c1c;
+  }
+
+  .task-due-date {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    user-select: none;
+    white-space: nowrap;
+    min-width: 120px;
+    font-weight: 600;
+  }
+
+  .task-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+  }
+  .task-actions button {
+    background: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    border-radius: 50%;
+    transition: background-color var(--transition-speed), color var(--transition-speed), box-shadow var(--transition-speed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.25);
+    font-size: 1.4rem;
+  }
+  .task-actions button:hover,
+  .task-actions button:focus {
+    background-color: var(--color-secondary);
+    color: white;
+    box-shadow: 0 6px 20px rgba(20, 184, 166, 0.5);
+    outline: none;
+  }
+
+  .task-filters {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .filter-btn {
+    background: transparent;
+    border: 2px solid var(--color-primary-light);
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    padding: 14px 32px;
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--color-primary);
+    transition: all var(--transition-speed);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    box-shadow: inset 0 0 0 0 var(--color-primary-light);
+  }
+  .filter-btn.active,
+  .filter-btn:hover,
+  .filter-btn:focus {
+    background: var(--color-primary-light);
+    border-color: var(--color-primary);
+    color: white;
+    outline: none;
+    box-shadow: 0 8px 24px var(--color-primary-light);
+  }
+
+  section#motivation {
+    background: var(--color-card-bg);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    box-shadow: 0 8px 24px var(--color-shadow);
+    margin-top: var(--spacing-lg);
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--color-primary-dark);
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    letter-spacing: 0.05em;
+    position: relative;
+  }
+  section#motivation img {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 120px;
+    opacity: 0.12;
+    user-select: none;
+    pointer-events: none;
+    border-radius: 50%;
+  }
+
+  footer {
+    background: rgba(255 255 255 / 0.9);
+    border-top: 2px solid var(--color-primary-light);
+    padding: var(--spacing-md) var(--spacing-md);
+    text-align: center;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    user-select: none;
+    flex-shrink: 0;
+    box-shadow: 0 -8px 20px rgba(124, 58, 237, 0.1);
+  }
+
+  ul.task-list::-webkit-scrollbar,
+  .project-list::-webkit-scrollbar,
+  .category-list::-webkit-scrollbar {
+    width: 12px;
+  }
+  ul.task-list::-webkit-scrollbar-track,
+  .project-list::-webkit-scrollbar-track,
+  .category-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ul.task-list::-webkit-scrollbar-thumb,
+  .project-list::-webkit-scrollbar-thumb,
+  .category-list::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary-light);
+    border-radius: 12px;
+    border: 3px solid var(--color-card-bg);
+  }
+  ul.task-list,
+  .project-list,
+  .category-list {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary-light) transparent;
+  }
+
+  @media (max-width: 767px) {
+    nav.desktop-nav { display: none; }
+    main {
+      grid-template-columns: 1fr;
+      padding-left: var(--spacing-sm);
+      padding-right: var(--spacing-sm);
+    }
+    aside.sidebar { display: none; }
+  }
+  @media (min-width: 768px) and (max-width: 1023px) {
+    nav.desktop-nav { display: none; }
+    main {
+      grid-template-columns: 280px 1fr;
+      gap: var(--spacing-lg);
+      padding-left: var(--spacing-md);
+      padding-right: var(--spacing-md);
+    }
+    aside.sidebar { display: block; max-height: 85vh; }
+  }
+  @media (min-width: 1024px) and (max-width: 1439px) {
+    nav.desktop-nav { display: block; }
+    .mobile-nav { display: none !important; }
+    main {
+      grid-template-columns: 280px 1fr 320px;
+      gap: var(--spacing-lg);
+      padding-left: var(--spacing-lg);
+      padding-right: var(--spacing-lg);
+    }
+    aside.sidebar { display: block; max-height: 90vh; }
+  }
+  @media (min-width: 1440px) {
+    nav.desktop-nav { display: block; }
+    main {
+      grid-template-columns: 320px 1fr 400px;
+      margin-left: auto;
+      margin-right: auto;
+      gap: var(--spacing-xl);
+    }
+    aside.sidebar { display: block; max-height: 90vh; }
+  }
+
+  a:focus,
+  button:focus,
+  input:focus,
+  select:focus {
+    outline-offset: 4px;
+    outline: 3px solid var(--color-primary-light);
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="container header-inner">
+    <div class="logo" tabindex="0" aria-label="Vibrant TaskMaster Logo">TaskMaster</div>
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <ul>
+        <li><a href="#projects" tabindex="0">Projects</a></li>
+        <li><a href="#tasks" tabindex="0">Tasks</a></li>
+        <li><a href="#motivation" tabindex="0">Motivation</a></li>
+      </ul>
+    </nav>
+    <button aria-label="Toggle menu" aria-expanded="false" class="hamburger-btn" id="menuToggle">
+      <span class="material-icons" aria-hidden="true">menu</span>
+    </button>
+  </div>
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" hidden>
+    <ul>
+      <li><a href="#projects" tabindex="0">Projects</a></li>
+      <li><a href="#tasks" tabindex="0">Tasks</a></li>
+      <li><a href="#motivation" tabindex="0">Motivation</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- Hero Banner Image -->
+<div class="hero-banner" tabindex="0" aria-label="Decorative task management banner">
+  <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/13244df8-4dac-4512-a6be-2d31f2d5c055.png" alt="Abstract vibrant purple and blue gradient background with digital geometric shapes representing task management and productivity." />
+  <div class="hero-caption">Organize Your Life Vibrantly</div>
+</div>
+
+<main>
+  <aside class="sidebar" aria-label="Project and Category Navigation" id="sidebar">
+    <section aria-labelledby="projects-label">
+      <h2 id="projects-label">Projects</h2>
+      <ul class="project-list" id="projectList"></ul>
+      <button id="showAddProjectFormBtn" aria-label="Add new project" title="Add new project">
+        <span class="material-icons" aria-hidden="true">add_circle</span> Add Project
+      </button>
+      <form class="add-inline-form" id="addProjectForm" aria-label="Add new project form" novalidate>
+        <input type="text" id="newProjectName" name="newProjectName" placeholder="Project name" minlength="2" maxlength="30" required aria-required="true"/>
+        <button type="submit" aria-label="Submit new project">Add</button>
+        <button type="button" class="cancel-btn" aria-label="Cancel adding project">Cancel</button>
+      </form>
+    </section>
+    <section aria-labelledby="categories-label" style="margin-top: var(--spacing-lg);">
+      <h2 id="categories-label">Categories</h2>
+      <ul class="category-list" id="categoryList"></ul>
+      <button id="showAddCategoryFormBtn" aria-label="Add new category" title="Add new category">
+        <span class="material-icons" aria-hidden="true">add_circle</span> Add Category
+      </button>
+      <form class="add-inline-form" id="addCategoryForm" aria-label="Add new category form" novalidate>
+        <input type="text" id="newCategoryName" name="newCategoryName" placeholder="Category name" minlength="2" maxlength="30" required aria-required="true"/>
+        <button type="submit" aria-label="Submit new category">Add</button>
+        <button type="button" class="cancel-btn" aria-label="Cancel adding category">Cancel</button>
+      </form>
+    </section>
+  </aside>
+
+  <section class="task-section" aria-labelledby="tasks-label">
+    <header>
+      <h2 id="tasks-label">Tasks</h2>
+      <form class="add-task-form" aria-label="Add new task" id="addTaskForm" novalidate>
+        <input type="text" id="taskTitle" name="taskTitle" placeholder="Task title" aria-required="true" required minlength="3" maxlength="100" />
+        <select name="taskPriority" id="taskPriority" aria-label="Select task priority" required>
+          <option value="" disabled selected>Priority</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <input type="date" id="taskDueDate" name="taskDueDate" aria-label="Due date" />
+        <button type="submit" aria-label="Add task" title="Add task">
+          <span class="material-icons" aria-hidden="true">add_circle</span> Add
+        </button>
+      </form>
+    </header>
+
+    <ul class="task-list" id="taskList" aria-live="polite" aria-relevant="additions removals"></ul>
+
+    <div class="task-filters" role="group" aria-label="Task filters">
+      <button class="filter-btn active" data-filter="all" type="button" aria-pressed="true">All</button>
+      <button class="filter-btn" data-filter="pending" type="button" aria-pressed="false">Pending</button>
+      <button class="filter-btn" data-filter="completed" type="button" aria-pressed="false">Completed</button>
+      <button class="filter-btn" data-filter="high" type="button" aria-pressed="false">High Priority</button>
+      <button class="filter-btn" data-filter="today" type="button" aria-pressed="false">Due Today</button>
+    </div>
+  </section>
+
+  <section id="motivation" aria-live="polite" aria-atomic="true" role="region" aria-label="Motivational Quotes">
+    Loading motivational quotes...
+    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7da472be-bbd6-453a-8679-0cb402079cae.png" alt="Decorative soft round violet shape representing inspiration and motivation." />
+  </section>
+</main>
+
+<footer>
+  &copy; 2025 TaskMaster - Vibrant & Spacious Todo & Task Manager Application
+</footer>
+
+<script>
+  "use strict";
+  const menuToggleBtn = document.getElementById('menuToggle');
+  const mobileNav = document.getElementById('mobileNav');
+  const projectListEl = document.getElementById('projectList');
+  const categoryListEl = document.getElementById('categoryList');
+  const addTaskForm = document.getElementById('addTaskForm');
+  const taskListEl = document.getElementById('taskList');
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const motivationEl = document.getElementById('motivation');
+
+  // Elements for inline add forms
+  const showAddProjectFormBtn = document.getElementById('showAddProjectFormBtn');
+  const addProjectForm = document.getElementById('addProjectForm');
+  const newProjectNameInput = document.getElementById('newProjectName');
+
+  const showAddCategoryFormBtn = document.getElementById('showAddCategoryFormBtn');
+  const addCategoryForm = document.getElementById('addCategoryForm');
+  const newCategoryNameInput = document.getElementById('newCategoryName');
+
+  let state = {
+    projects: [],
+    categories: [],
+    tasks: [],
+    selectedProjectId: null,
+    selectedCategoryId: null,
+    filter: 'all',
+  };
+
+  function generateId() { return '_' + Math.random().toString(36).substr(2, 9); }
+  function saveState() { localStorage.setItem('taskMasterStateVibrant', JSON.stringify(state)); }
+  function loadState() {
+    const saved = localStorage.getItem('taskMasterStateVibrant');
+    if (saved) {
+      try { state = JSON.parse(saved); }
+      catch { state = {projects:[],categories:[],tasks:[],selectedProjectId:null,selectedCategoryId:null,filter:'all'}; }
+    } else {
+      // Provide default sample data on first load
+      state.projects = [
+        {id: generateId(), name: 'Website Redesign'},
+        {id: generateId(), name: 'Marketing Campaign'}
+      ];
+      state.categories = [
+        {id: generateId(), name: 'Design'},
+        {id: generateId(), name: 'Development'},
+        {id: generateId(), name: 'Sales'}
+      ];
+      state.tasks = [
+        {id: generateId(), title: 'Create wireframes', priority: 'high', dueDate: null, completed: false, projectId: '', categoryId: '',},
+        {id: generateId(), title: 'Write blog post', priority: 'medium', dueDate: null, completed: false, projectId: '', categoryId: '',},
+        {id: generateId(), title: 'Launch email blast', priority: 'low', dueDate: null, completed: false, projectId: '', categoryId: '',},
+      ];
+      // link tasks to projects and categories
+      if(state.projects.length) {
+        state.tasks[0].projectId = state.projects[0].id;
+        state.tasks[1].projectId = state.projects[1].id;
+        state.tasks[2].projectId = state.projects[1].id;
+      }
+      if(state.categories.length) {
+        state.tasks[0].categoryId = state.categories[0].id;
+        state.tasks[1].categoryId = state.categories[1].id;
+        state.tasks[2].categoryId = state.categories[2].id;
+      }
+      state.selectedProjectId = state.projects[0].id;
+      state.selectedCategoryId = null;
+      saveState();
+    }
+  }
+
+  function renderProjects() {
+    projectListEl.innerHTML = '';
+    if (state.projects.length === 0) {
+      const li = document.createElement('li');
+      li.textContent = "No projects yet. Add one!";
+      li.style.color = 'var(--color-text-secondary)';
+      li.style.fontWeight = '600';
+      projectListEl.appendChild(li);
+      return;
+    }
+    state.projects.forEach(proj => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.textContent = proj.name;
+      btn.type = 'button';
+      btn.setAttribute('aria-pressed', (proj.id === state.selectedProjectId).toString());
+      btn.classList.toggle('active', proj.id === state.selectedProjectId);
+      btn.onclick = () => {
+        state.selectedProjectId = proj.id;
+        renderProjects();
+        renderTasks();
+        saveState();
+      };
+      li.appendChild(btn);
+      projectListEl.appendChild(li);
+    });
+  }
+
+  function renderCategories() {
+    categoryListEl.innerHTML = '';
+    if (state.categories.length === 0) {
+      const li = document.createElement('li');
+      li.textContent = "No categories yet. Add one!";
+      li.style.color = 'var(--color-text-secondary)';
+      li.style.fontWeight = '600';
+      categoryListEl.appendChild(li);
+      return;
+    }
+    state.categories.forEach(cat => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.textContent = cat.name;
+      btn.type = 'button';
+      btn.setAttribute('aria-pressed', (cat.id === state.selectedCategoryId).toString());
+      btn.classList.toggle('active', cat.id === state.selectedCategoryId);
+      btn.onclick = () => {
+        state.selectedCategoryId = cat.id;
+        renderCategories();
+        renderTasks();
+        saveState();
+      };
+      li.appendChild(btn);
+      categoryListEl.appendChild(li);
+    });
+  }
+
+  function renderTasks() {
+    taskListEl.innerHTML = '';
+    let filteredTasks = state.tasks;
+
+    if (state.selectedProjectId) filteredTasks = filteredTasks.filter(t => t.projectId === state.selectedProjectId);
+    if (state.selectedCategoryId) filteredTasks = filteredTasks.filter(t => t.categoryId === state.selectedCategoryId);
+
+    switch (state.filter) {
+      case 'pending': filteredTasks = filteredTasks.filter(t => !t.completed); break;
+      case 'completed': filteredTasks = filteredTasks.filter(t => t.completed); break;
+      case 'high': filteredTasks = filteredTasks.filter(t => t.priority==='high'); break;
+      case 'today':
+        const todayStr = new Date().toISOString().slice(0,10);
+        filteredTasks = filteredTasks.filter(t => t.dueDate === todayStr);
+        break;
+    }
+
+    if(filteredTasks.length === 0){
+      const emptyMessage = document.createElement('li');
+      emptyMessage.textContent = 'No tasks found for current selection/filter.';
+      emptyMessage.style.color = 'var(--color-text-secondary)';
+      emptyMessage.style.fontWeight = '600';
+      taskListEl.appendChild(emptyMessage);
+      return;
+    }
+
+    filteredTasks.forEach(task => {
+      const li = document.createElement('li');
+      li.classList.toggle('completed', task.completed);
+      li.setAttribute('tabindex','0');
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = task.completed;
+      checkbox.setAttribute('aria-label', `Mark task "${task.title}" as completed`);
+      checkbox.addEventListener('change', e => {
+        task.completed = e.target.checked;
+        saveState();
+        renderTasks();
+      });
+
+      const label = document.createElement('label');
+      label.textContent = task.title;
+      label.htmlFor = task.id;
+
+      const prioritySpan = document.createElement('span');
+      prioritySpan.className = 'task-priority';
+      prioritySpan.classList.add({low:'priority-low',medium:'priority-medium',high:'priority-high'}[task.priority] || 'priority-low');
+      prioritySpan.textContent = task.priority || 'low';
+
+      const dueSpan = document.createElement('span');
+      dueSpan.className = 'task-due-date';
+      if(task.dueDate) {
+        const d = new Date(task.dueDate);
+        dueSpan.textContent = d.toLocaleDateString(undefined, {year:'numeric',month:'short',day:'numeric'});
+        dueSpan.title = 'Due date';
+      } else { dueSpan.textContent = ''; }
+
+      const actions = document.createElement('div');
+      actions.className = 'task-actions';
+
+      const editBtn = document.createElement('button');
+      editBtn.type = 'button';
+      editBtn.setAttribute('aria-label', `Edit task ${task.title}`);
+      editBtn.innerHTML = '<span class="material-icons" aria-hidden="true">edit</span>';
+      editBtn.addEventListener('click', () => { editTask(task.id); });
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.setAttribute('aria-label', `Delete task ${task.title}`);
+      deleteBtn.innerHTML = '<span class="material-icons" aria-hidden="true">delete</span>';
+      deleteBtn.addEventListener('click', () => {
+        if(confirm(`Delete task "${task.title}"?`)){ deleteTask(task.id); }
+      });
+
+      actions.append(editBtn, deleteBtn);
+
+      li.append(checkbox, label, prioritySpan, dueSpan, actions);
+      taskListEl.appendChild(li);
+    });
+  }
+
+  function editTask(taskId) {
+    const task = state.tasks.find(t => t.id === taskId);
+    if (!task) return;
+    addTaskForm.taskTitle.value = task.title;
+    addTaskForm.taskPriority.value = task.priority;
+    addTaskForm.taskDueDate.value = task.dueDate || '';
+    addTaskForm.dataset.editId = taskId;
+    addTaskForm.taskTitle.focus();
+  }
+
+  function deleteTask(taskId) {
+    state.tasks = state.tasks.filter(t => t.id !== taskId);
+    saveState();
+    renderTasks();
+  }
+
+  function clearEdit() { delete addTaskForm.dataset.editId; addTaskForm.reset(); }
+
+  addTaskForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = addTaskForm.taskTitle.value.trim();
+    const priority = addTaskForm.taskPriority.value;
+    const dueDate = addTaskForm.taskDueDate.value || null;
+    if(!title || !priority) return;
+
+    if(addTaskForm.dataset.editId){
+      const taskId = addTaskForm.dataset.editId;
+      const task = state.tasks.find(t => t.id === taskId);
+      if(task){
+        task.title = title;
+        task.priority = priority;
+        task.dueDate = dueDate;
+      }
+      clearEdit();
+    } else {
+      if(!state.selectedProjectId){
+        alert('Please add and select a project first.');
+        return;
+      }
+      const newTask = {
+        id: generateId(),
+        title,
+        priority,
+        dueDate,
+        completed: false,
+        projectId: state.selectedProjectId,
+        categoryId: state.selectedCategoryId,
+      };
+      state.tasks.push(newTask);
+    }
+    saveState();
+    addTaskForm.reset();
+    renderTasks();
+  });
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      state.filter = btn.dataset.filter;
+      renderTasks();
+    });
+  });
+
+  // Show/hide inline add project form
+  showAddProjectFormBtn.addEventListener('click', () => {
+    toggleInlineForm(addProjectForm, showAddProjectFormBtn);
+  });
+
+  // Show/hide inline add category form
+  showAddCategoryFormBtn.addEventListener('click', () => {
+    toggleInlineForm(addCategoryForm, showAddCategoryFormBtn);
+  });
+
+  function toggleInlineForm(formEl, toggleBtn) {
+    const isActive = formEl.classList.contains('active');
+    if(isActive){
+      formEl.classList.remove('active');
+      toggleBtn.style.display = 'flex';
+    } else {
+      formEl.classList.add('active');
+      toggleBtn.style.display = 'none';
+      formEl.querySelector('input[type="text"]').focus();
+    }
+  }
+
+  // Handle add project form submit
+  addProjectForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const val = newProjectNameInput.value.trim();
+    if(val.length >= 2 && val.length <= 30){
+      const newProj = {id: generateId(), name: val};
+      state.projects.push(newProj);
+      state.selectedProjectId = newProj.id;
+      saveState();
+      renderProjects();
+      renderTasks();
+      addProjectForm.reset();
+      toggleInlineForm(addProjectForm, showAddProjectFormBtn);
+    } else {
+      alert('Project name must be 2-30 characters.');
+      newProjectNameInput.focus();
+    }
+  });
+
+  // Cancel add project
+  addProjectForm.querySelector('.cancel-btn').addEventListener('click', () => {
+    addProjectForm.reset();
+    toggleInlineForm(addProjectForm, showAddProjectFormBtn);
+  });
+
+  // Handle add category form submit
+  addCategoryForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const val = newCategoryNameInput.value.trim();
+    if(val.length >= 2 && val.length <= 30){
+      const newCat = {id: generateId(), name: val};
+      state.categories.push(newCat);
+      state.selectedCategoryId = newCat.id;
+      saveState();
+      renderCategories();
+      renderTasks();
+      addCategoryForm.reset();
+      toggleInlineForm(addCategoryForm, showAddCategoryFormBtn);
+    } else {
+      alert('Category name must be 2-30 characters.');
+      newCategoryNameInput.focus();
+    }
+  });
+
+  // Cancel add category
+  addCategoryForm.querySelector('.cancel-btn').addEventListener('click', () => {
+    addCategoryForm.reset();
+    toggleInlineForm(addCategoryForm, showAddCategoryFormBtn);
+  });
+
+  menuToggleBtn.addEventListener('click', () => {
+    const isOpen = mobileNav.classList.toggle('open');
+    menuToggleBtn.setAttribute('aria-expanded', isOpen.toString());
+    mobileNav.hidden = !isOpen;
+  });
+
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      menuToggleBtn.setAttribute('aria-expanded', 'false');
+      mobileNav.hidden = true;
+    });
+  });
+
+  async function fetchMotivationalQuote() {
+    motivationEl.textContent = "Loading motivational quote...";
+    try {
+      const resp = await fetch('https://zenquotes.io/api/random');
+      if(!resp.ok) throw new Error('Network error');
+      const data = await resp.json();
+      if(data && data[0]){
+        motivationEl.textContent = `"${data[0].q}" — ${data[0].a}`;
+      } else {
+        motivationEl.textContent = "Stay motivated and keep working hard!";
+      }
+    } catch (error) {
+      motivationEl.textContent = " ~ The future depends on what you do today !!! Push yourself, because no one else is going to do it for you! The only limit to our realization of tomorrow is our doubts of today!! You are braver than you believe, stronger than you seem, and smarter than you think";
+    }
+  }
+
+  function init() {
+    loadState();
+    renderProjects();
+    renderCategories();
+    renderTasks();
+    fetchMotivationalQuote();
+
+    if(state.projects.length === 0) { addProject('Default Project'); }
+    if(state.categories.length === 0) { addCategory('General'); }
+  }
+
+  init();
+
+  document.addEventListener('keydown', (e) => {
+    if(e.ctrlKey && e.key === 'Enter'){
+      addTaskForm.taskTitle.focus();
+      e.preventDefault();
+    }
+  });
+</script>
+</body>
+</html>
+
