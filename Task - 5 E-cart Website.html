@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Cart Online Shopping</title>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            transition: background-color 0.5s ease;
+        }
+
+        /* State management via body class */
+        body.logged-out #main-store,
+        body.logged-out footer {
+            display: none;
+        }
+
+        body.logged-in #login-page {
+            display: none;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3a6186 0%, #89253e 100%);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        nav a {
+            color: white;
+            margin-left: 1.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        nav a:hover {
+            color: #ffc107;
+        }
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+        .product {
+            border: 1px solid #ddd;
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .product:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        .product model-viewer {
+            width: 100%;
+            height: 250px;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+        }
+        .cart {
+            margin: 2rem;
+            padding: 2rem;
+            border-top: 3px solid #3a6186;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        .cart h2 {
+            margin-bottom: 1.5rem;
+            color: #3a6186;
+        }
+        .cart ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .cart li {
+            background: #f9f9f9;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #3a6186;
+        }
+        .cart li button {
+            background: linear-gradient(135deg, #d32f2f, #c2185b);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .cart li button:hover {
+            background: linear-gradient(135deg, #c2185b, #d32f2f);
+        }
+        button {
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+            transform: scale(1.05);
+        }
+        .checkout-btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+        }
+        .checkout-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #004085);
+        }
+        #cart-count {
+            background-color: #ffc107;
+            color: #333;
+            border-radius: 50%;
+            padding: 4px 8px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        /* Login Page Styles */
+        #login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #3a6186 0%, #89253e 100%);
+        }
+        .login-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .login-container h2 {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        .login-container .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        .login-container input {
+            width: calc(100% - 2rem);
+            padding: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .login-container p {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        .login-container .links a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+         #login-error {
+            color: #d32f2f;
+            margin-top: 1rem;
+            height: 20px;
+            font-weight: bold;
+        }
+        /* Auth Nav styling */
+        #logout-link { display: none; }
+        body.logged-in #login-link { display: none; }
+        body.logged-in #logout-link { display: inline; }
+
+    </style>
+</head>
+<body class="logged-out">
+
+    <section id="login-page">
+        <div class="login-container">
+            <h2>Welcome to E-Cart</h2>
+            <p style="color: #666; margin-top: -1rem; margin-bottom: 2rem;">Please log in to continue</p>
+            <form id="login-form">
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit">Login</button>
+                <div id="login-error"></div>
+            </form>
+            <div class="links" style="margin-top: 1.5rem;">
+                <a href="#">Sign Up</a> | <a href="#">Forgot Password?</a>
+            </div>
+             <div style="margin-top: 2rem; color: #888; font-size: 0.8rem;">
+                <p>Use credentials:</p>
+                <p>Username: <strong>user</strong> | Password: <strong>password123</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <div id="main-store">
+        <header>
+            <h1>E-Cart</h1>
+            <nav>
+                <a href="#" title="Return to the Main Homepage">Home</a>
+                <a href="#product-list" title="Browse Our Unique Collection of Products">Products</a>
+                <a href="#cart" title="View your shopping cart">🛒 Cart <span id="cart-count">0</span></a>
+                <a id="login-link" title="Login to your account">Login</a>
+                <a id="logout-link" title="Logout from your account">Logout</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="product-list" id="product-list">
+                 <div class="product">
+                    <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" alt="A model of an astronaut" auto-rotate camera-controls></model-viewer>
+                    <h3>Astronaut Figurine</h3>
+                    <p>₹2,500</p>
+                    <button onclick="addToCart('Astronaut Figurine', 2500)">🛒 Add to Cart</button>
+                </div>
+                <div class="product">
+                    <model-viewer src="https://modelviewer.dev/shared-assets/models/Horse.glb" alt="A model of a horse" auto-rotate camera-controls></model-viewer>
+                    <h3>Classic Horse Sculpture</h3>
+                    <p>₹3,200</p>
+                    <button onclick="addToCart('Classic Horse Sculpture', 3200)">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <model-viewer src="https://modelviewer.dev/shared-assets/models/RobotExpressive.glb" alt="A model of a robot" auto-rotate camera-controls></model-viewer>
+                    <h3>Expressive Robot</h3>
+                    <p>₹4,500</p>
+                    <button onclick="addToCart('Expressive Robot', 4500)">Add to Cart</button>
+                </div>
+            </section>
+
+            <section class="cart" id="cart">
+                <h2>Your Cart</h2>
+                <ul id="cart-items"></ul>
+                <p id="total-price">Total: ₹0.00</p>
+                <button class="checkout-btn" onclick="alert('Checkout functionality coming soon!')">Proceed to Checkout</button>
+            </section>
+        </main>
+    </div>
+
+    <footer style="background: linear-gradient(135deg, #3a6186 0%, #89253e 100%); color: white; text-align: center; padding: 1.5rem; margin-top: 2rem;">
+        <p>&copy; 2025 E-Cart. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is logged in from a previous session (optional)
+            // For now, we default to logged out state
+            document.body.classList.add('logged-out');
+            document.body.classList.remove('logged-in');
+
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            document.getElementById('logout-link').addEventListener('click', handleLogout);
+
+            updateCartDisplay();
+        });
+
+        function handleLogin(event) {
+            event.preventDefault(); // Prevent form from submitting and reloading the page
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('login-error');
+
+            // --- Dummy Credentials ---
+            if (username === 'user' && password === 'password123') {
+                document.body.classList.remove('logged-out');
+                document.body.classList.add('logged-in');
+                errorDiv.textContent = ''; // Clear any previous errors
+            } else {
+                errorDiv.textContent = 'Invalid username or password.';
+            }
+        }
+
+        function handleLogout() {
+             document.body.classList.add('logged-out');
+             document.body.classList.remove('logged-in');
+             // Optionally clear username/password fields
+             document.getElementById('username').value = '';
+             document.getElementById('password').value = '';
+        }
+
+
+        function addToCart(productName, price) {
+            const existingProductIndex = cart.findIndex(item => item.name === productName);
+            if (existingProductIndex > -1) {
+                cart[existingProductIndex].quantity += 1;
+            } else {
+                cart.push({ name: productName, price: price, quantity: 1 });
+            }
+            saveAndupdateCartDisplay();
+            showToast(productName + " added to cart!");
+        }
+
+        function removeFromCart(productName) {
+            cart = cart.filter(item => item.name !== productName);
+            saveAndupdateCartDisplay();
+        }
+
+        function updateQuantity(productName, newQuantity) {
+            const productIndex = cart.findIndex(item => item.name === productName);
+            if (productIndex > -1) {
+                // Ensure the quantity is a positive number
+                const qty = Math.max(1, newQuantity);
+                cart[productIndex].quantity = qty;
+                 if (qty <= 0) { // This part is now less likely to be reached, but good for safety
+                    removeFromCart(productName);
+                } else {
+                    saveAndupdateCartDisplay();
+                }
+            }
+        }
+
+        function saveAndupdateCartDisplay() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById("cart-items");
+            if (!cartItems) return; // Don't run if the cart element doesn't exist yet
+            cartItems.innerHTML = "";
+            let total = 0;
+            let totalItems = 0;
+
+            cart.forEach(item => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <span>${item.name} - ₹${item.price.toLocaleString('en-IN')}</span>
+                    <div style="display: flex; align-items: center;">
+                        <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity('${item.name}', this.valueAsNumber)" style="width: 50px; text-align: center; margin-right: 10px; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
+                        <button onclick="removeFromCart('${item.name}')">❌</button>
+                    </div>
+                `;
+                cartItems.appendChild(li);
+                total += item.price * item.quantity;
+                totalItems += item.quantity;
+            });
+
+            const totalPriceEl = document.getElementById("total-price");
+            const cartCountEl = document.getElementById("cart-count");
+
+            if(totalPriceEl) totalPriceEl.textContent = `Total: ₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+            if(cartCountEl) cartCountEl.textContent = totalItems;
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.right = '20px';
+            toast.style.background = '#28a745';
+            toast.style.color = 'white';
+            toast.style.padding = '15px 25px';
+            toast.style.borderRadius = '8px';
+            toast.style.zIndex = '1000';
+            toast.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
